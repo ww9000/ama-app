@@ -9,7 +9,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { PersistenceConfiguration.class };
+		return new Class[] { CommonConfiguration.class, PersistenceConfiguration.class };
 	}
 
 	@Override
@@ -19,7 +19,6 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
 	@Override
 	protected String[] getServletMappings() {
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		return new String[] { "/" };
 	}
 

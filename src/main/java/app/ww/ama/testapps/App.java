@@ -1,4 +1,4 @@
-package app.ww.ama;
+package app.ww.ama.testapps;
 
 /**
  * Hello world!

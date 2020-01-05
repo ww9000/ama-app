@@ -9,7 +9,7 @@ import app.ww.ama.persistence.dao.UserDAO;
 import app.ww.ama.persistence.dto.User;
 
 @Service
-public class UserService {
+public class UserService extends AbstractService {
 	
 	@Autowired
 	private UserDAO dao;
