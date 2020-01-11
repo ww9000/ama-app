@@ -6,8 +6,12 @@ import app.ww.ama.persistence.dto.User;
 
 public interface UserDAO {
 	
-	public void save(User user);
+	public List<User> findAll();
 	
-	public List<User> getUsers();
+	public User findById(String id);
+	
+	public String save(User user);
+	
+	public User update(User user);
 	
 }

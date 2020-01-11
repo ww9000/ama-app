@@ -26,7 +26,7 @@ import app.ww.ama.common.EncryptionService;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:application.properties" })
-@ComponentScan({ "app.ww.ama.persistence.dto", "app.ww.ama.persistence.dao." + "${datasource.type}" })
+@ComponentScan({ "app.ww.ama.persistence.dao." + "${datasource.type}", "app.ww.ama.service" })
 public class PersistenceConfiguration {
 
 	private static final String DTO_PACKAGE = "app.ww.ama.persistence.dto";

@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@EnableWebMvc
 @Configuration
+@EnableWebMvc
 @ComponentScan({"app.ww.ama.controller", "app.ww.ama.service"})
 public class ApplicationConfiguration implements WebMvcConfigurer {
 	
