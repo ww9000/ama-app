@@ -30,7 +30,7 @@ import com.google.crypto.tink.proto.KeyTemplate;
 
 import app.ww.ama.context.CommonConfiguration;
 
-@PowerMockIgnore({ "javax.crypto.*", "javax.management.*" })
+@PowerMockIgnore({ "javax.crypto.*", "javax.management.*", "javax.script.*" })
 @PrepareForTest({ BinaryKeysetReader.class, CleartextKeysetHandle.class })
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
