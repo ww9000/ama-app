@@ -9,8 +9,8 @@ import java.security.GeneralSecurityException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -28,7 +28,7 @@ import com.google.crypto.tink.KeysetReader;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
 
-import app.ww.ama.context.CommonConfiguration;
+import app.ww.ama.configuration.CommonConfiguration;
 
 @PowerMockIgnore({ "javax.crypto.*", "javax.management.*", "javax.script.*" })
 @PrepareForTest({ BinaryKeysetReader.class, CleartextKeysetHandle.class })
@@ -63,8 +63,8 @@ public class EncryptionServiceTest {
 
 	@Test
 	public void testEncryptDecryptSuccess() throws GeneralSecurityException, IOException {
-		PowerMockito.when(BinaryKeysetReader.withFile(Matchers.any())).thenReturn(keysetReaderMock);
-		PowerMockito.when(CleartextKeysetHandle.read(Matchers.any(KeysetReader.class))).thenReturn(keysetHandle);
+		PowerMockito.when(BinaryKeysetReader.withFile(Mockito.any())).thenReturn(keysetReaderMock);
+		PowerMockito.when(CleartextKeysetHandle.read(Mockito.any(KeysetReader.class))).thenReturn(keysetHandle);
 		String plainText = "plaintextstring";
 		String encrypted = encryptionSvc.encrypt(plainText, keyPath);
 		String decrypted = encryptionSvc.decrypt(encrypted, keyPath);
@@ -74,11 +74,11 @@ public class EncryptionServiceTest {
 
 	@Test(expected = GeneralSecurityException.class)
 	public void testEncryptDecryptFailWrongKey() throws GeneralSecurityException, IOException {
-		PowerMockito.when(BinaryKeysetReader.withFile(Matchers.any())).thenReturn(keysetReaderMock);
-		PowerMockito.when(CleartextKeysetHandle.read(Matchers.any(KeysetReader.class))).thenReturn(keysetHandle);
+		PowerMockito.when(BinaryKeysetReader.withFile(Mockito.any())).thenReturn(keysetReaderMock);
+		PowerMockito.when(CleartextKeysetHandle.read(Mockito.any(KeysetReader.class))).thenReturn(keysetHandle);
 		String plainText = "plaintextstring";
 		String encrypted = encryptionSvc.encrypt(plainText, keyPath);
-		PowerMockito.when(CleartextKeysetHandle.read(Matchers.any(KeysetReader.class))).thenReturn(wrongKeysetHandle);
+		PowerMockito.when(CleartextKeysetHandle.read(Mockito.any(KeysetReader.class))).thenReturn(wrongKeysetHandle);
 		encryptionSvc.decrypt(encrypted, keyPath);
 	}
 }

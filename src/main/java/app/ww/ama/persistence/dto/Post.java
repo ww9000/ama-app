@@ -26,19 +26,31 @@ public class Post extends BaseTable implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer postId;
 
-	@Column(name = "poster_id")
-	private String posterId;
-
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "poster_id", referencedColumnName = "user_id", updatable = false, insertable = false)
+	@JoinColumn(name = "poster_id", referencedColumnName = "user_id", nullable = false)
 	private User poster;
 	
-	@Column(name = "post_content")
+	@Column(name = "post_title", nullable = false)
+	private String title;
+	
+	@Column(name = "post_content", nullable = false)
 	private String content;
 
-	@Column(name = "post_rating")
+	@Column(name = "post_rating", nullable = false)
 	private int rating;
 
+	public Post() {}
+	
+	public Post(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
+	
+	public Post(String title, String content, User poster) {
+		this(title, content);
+		this.poster = poster;
+	}
+	
 	public Integer getPostId() {
 		return postId;
 	}
@@ -48,17 +60,25 @@ public class Post extends BaseTable implements Serializable {
 	}
 
 	public String getPosterId() {
-		return this.poster.getId();
-	}
-
-	public void setPosterId(String posterId) {
-		this.posterId = posterId;
+		return this.getPoster().getId();
 	}
 	
 	public User getPoster() {
 		return this.poster;
 	}
+	
+	public void setPoster(User user) {
+		this.poster = user;
+	}
 
+	public String getTitle() {
+		return this.title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public String getContent() {
 		return content;
 	}

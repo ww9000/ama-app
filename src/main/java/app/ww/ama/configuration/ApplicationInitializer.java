@@ -1,4 +1,4 @@
-package app.ww.ama.context;
+package app.ww.ama.configuration;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;

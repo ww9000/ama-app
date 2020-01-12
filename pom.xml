@@ -132,6 +132,13 @@
 			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- H2 Database Engine as in memory database for persistence testing -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

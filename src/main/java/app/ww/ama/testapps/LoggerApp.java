@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import app.ww.ama.context.PersistenceConfiguration;
+import app.ww.ama.configuration.PersistenceConfiguration;
 
 public class LoggerApp {
 

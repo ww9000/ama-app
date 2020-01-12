@@ -26,24 +26,18 @@ public class Reply extends BaseTable implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer replyId;
 
-	@Column(name = "replier_id")
-	private String replierId;
-
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "replier_id", referencedColumnName = "user_id", updatable = false, insertable = false)
+	@JoinColumn(name = "replier_id", referencedColumnName = "user_id", nullable = false)
 	private User replier;
 
-	@Column(name = "post_id")
-	private String parentPostId;
-
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "post_id", referencedColumnName = "post_id", updatable = false, insertable = false)
+	@JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false)
 	private Post parentPost;
 
-	@Column(name = "reply_content")
+	@Column(name = "reply_content", nullable = false)
 	private String content;
 
-	@Column(name = "reply_rating")
+	@Column(name = "reply_rating", nullable = false)
 	private int rating;
 
 	public Integer getReplyId() {
@@ -55,11 +49,7 @@ public class Reply extends BaseTable implements Serializable {
 	}
 
 	public String getReplierId() {
-		return replierId;
-	}
-
-	public void setReplierId(String replierId) {
-		this.replierId = replierId;
+		return getReplier().getId();
 	}
 
 	public User getReplier() {
@@ -70,12 +60,8 @@ public class Reply extends BaseTable implements Serializable {
 		this.replier = replier;
 	}
 
-	public String getParentPostId() {
-		return parentPostId;
-	}
-
-	public void setParentPostId(String parentPostId) {
-		this.parentPostId = parentPostId;
+	public Integer getParentPostId() {
+		return getParentPost().getPostId();
 	}
 
 	public Post getParentPost() {

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.google.gson.Gson;
 
-import app.ww.ama.context.CommonConfiguration;
-import app.ww.ama.context.PersistenceConfiguration;
+import app.ww.ama.configuration.CommonConfiguration;
+import app.ww.ama.configuration.PersistenceConfiguration;
 import app.ww.ama.persistence.dao.PostDAO;
 import app.ww.ama.persistence.dto.Post;
 import app.ww.ama.persistence.dto.User;
@@ -29,21 +29,21 @@ public class HibernateApp {
 		gson = ctx.getBean(Gson.class);
 //		saveUsers();
 //		getUsers();
-		savePosts();
+//		savePosts();
 //		getPosts();
 		((ConfigurableApplicationContext) ctx).close();
 	}
 	
-	public static void savePosts() {
-		PostDAO dao = ctx.getBean(PostDAO.class);
-		Post post =  new Post();
-		post.setPosterId("wanway1");
-		post.setContent("hihi");
-		Integer id = dao.save(post);
-		
-		post = dao.findById(id);
-		System.out.println(gson.toJson(post));
-	}
+//	public static void savePosts() {
+//		PostDAO dao = ctx.getBean(PostDAO.class);
+//		Post post =  new Post();
+//		post.setPosterId("wanway1");
+//		post.setContent("hihi");
+//		Integer id = dao.save(post);
+//		
+//		post = dao.findById(id);
+//		System.out.println(gson.toJson(post));
+//	}
 	
 	public static void getPosts() {
 		PostDAO dao = ctx.getBean(PostDAO.class);

@@ -16,6 +16,7 @@ create table USERS (
 create table POSTS (
 	post_id int unsigned not null auto_increment,
 	poster_id varchar(30) not null,
+	post_title varchar(50) not null,
 	post_content varchar(500) not null,
 	post_rating smallint default 0,
 	deleted boolean not null default false,

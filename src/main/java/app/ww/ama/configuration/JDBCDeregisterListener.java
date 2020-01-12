@@ -1,4 +1,4 @@
-package app.ww.ama.context;
+package app.ww.ama.configuration;
 
 import java.sql.Driver;
 import java.sql.DriverManager;

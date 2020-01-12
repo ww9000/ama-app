@@ -1,7 +1,8 @@
 package app.ww.ama.persistence.dto;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,11 +30,11 @@ public class User extends BaseTable implements Serializable {
 
 	@Transient
 	@OneToMany(mappedBy = "posterId", fetch = FetchType.LAZY)
-	private Set<Post> posts;
+	private List<Post> posts = new ArrayList<>();
 
 	@Transient
 	@OneToMany(mappedBy = "replierId", fetch = FetchType.LAZY)
-	private Set<Reply> replyPosts;
+	private List<Reply> replyPosts = new ArrayList<>();
 
 	public User() {
 	}
@@ -59,7 +60,11 @@ public class User extends BaseTable implements Serializable {
 		this.userName = name;
 	}
 
-	public Set<Post> getPosts() {
+	public List<Post> getPosts() {
 		return this.posts;
+	}
+	
+	public void addPost(Post post) {
+		this.posts.add(post);
 	}
 }

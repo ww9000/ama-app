@@ -5,18 +5,21 @@ import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @MappedSuperclass
 public class BaseTable {
 
 	@Column(name = "deleted")
 	private boolean isDeleted;
 
-//	@CreationTimestamp
-	@Column(name = "creation_timestamp")
+	@Column(name = "creation_timestamp", updatable = false)
+	@CreationTimestamp
 	private Date creationTimestamp;
 
-//	@UpdateTimestamp
 	@Column(name = "update_timestamp")
+	@UpdateTimestamp
 	private Date updateTimestamp;
 
 	public boolean getIsDeleted() {
@@ -27,12 +30,12 @@ public class BaseTable {
 		this.isDeleted = isDeleted;
 	}
 
-	public Date getCreatedTimestamp() {
+	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
 
-	public void setCreatedTimestamp(Date createdTimestamp) {
-		this.creationTimestamp = createdTimestamp;
+	public void setCreationTimestamp(Date creationTimestamp) {
+		this.creationTimestamp = creationTimestamp;
 	}
 
 	public Date getUpdatedTimestamp() {
