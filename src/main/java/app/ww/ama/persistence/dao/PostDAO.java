@@ -14,4 +14,6 @@ public interface PostDAO {
 	public Integer save(Post post);
 
 	public Post update(Post post);
+	
+	public void clearCache();
 }

@@ -1,7 +1,14 @@
 package app.ww.ama.persistence;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,14 +20,14 @@ import com.google.gson.Gson;
 import app.ww.ama.common.AbstractLogger;
 
 @Transactional
-public abstract class AbstractDAO<DTO, PK extends Serializable> extends AbstractLogger {
+public abstract class AbstractDAOSQL<DTO, PK extends Serializable> extends AbstractLogger {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Autowired
 	private Gson gson;
-	
+
 	protected Class<DTO> dtoClass;
 
 	public abstract void setDtoClass();
@@ -33,8 +40,7 @@ public abstract class AbstractDAO<DTO, PK extends Serializable> extends Abstract
 	}
 
 	public DTO findById(PK id) {
-		logger.debug(
-				"Finding object of class: " + this.dtoClass.getName() + " with id: " + gson.toJson(id));
+		logger.debug("Finding object of class: " + this.dtoClass.getName() + " with id: " + gson.toJson(id));
 		return getCurrentSession().get(dtoClass, id);
 	}
 
@@ -44,6 +50,16 @@ public abstract class AbstractDAO<DTO, PK extends Serializable> extends Abstract
 		PK savedId = (PK) getCurrentSession().save(object);
 		logger.debug("Saved entity of class: " + dtoClass.getName() + " with id: " + gson.toJson(savedId));
 		return savedId;
+	}
+
+	public List<PK> save(DTO[] objects) {
+		List<PK> savedPKs = new ArrayList<>();
+		for (DTO object : objects) {
+			@SuppressWarnings("unchecked")
+			PK savedId = (PK) getCurrentSession().save(object);
+			savedPKs.add(savedId);
+		}
+		return savedPKs;
 	}
 
 	public DTO update(DTO object) {
@@ -62,6 +78,34 @@ public abstract class AbstractDAO<DTO, PK extends Serializable> extends Abstract
 		logger.debug("Deleting object with id: " + gson.toJson(id));
 		DTO entity = findById(id);
 		delete(entity);
+	}
+
+	protected Query getQuery(QueryCriteria... criteriaList) {
+		CriteriaBuilder critBuilder = getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<DTO> critQuery = critBuilder.createQuery(dtoClass);
+		Root<DTO> fromCrit = critQuery.from(dtoClass);
+
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		for (QueryCriteria criteria : criteriaList) {
+			switch (criteria.getConditionType()) {
+			case EQUAL:
+				Predicate predicate = critBuilder.equal(fromCrit.get(criteria.getFieldName()),
+						criteria.getFieldValue());
+				predicates.add(predicate);
+				break;
+
+			default:
+				logger.error("Failed to parse query condition type: " + criteria.getConditionType().name());
+				break;
+			}
+		}
+		critQuery.where(predicates.toArray(new Predicate[] {}));
+		
+		return getCurrentSession().createQuery(critQuery);
+	}
+
+	public void clearCache() {
+		getCurrentSession().clear();
 	}
 
 	protected Session getCurrentSession() {

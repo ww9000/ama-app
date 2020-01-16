@@ -27,11 +27,11 @@ public class Reply extends BaseTable implements Serializable {
 	private Integer replyId;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "replier_id", referencedColumnName = "user_id", nullable = false)
+	@JoinColumn(name = "replier_id", referencedColumnName = "user_id", nullable = false, updatable = false)
 	private User replier;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false)
+	@JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false, updatable = false)
 	private Post parentPost;
 
 	@Column(name = "reply_content", nullable = false)
@@ -40,11 +40,20 @@ public class Reply extends BaseTable implements Serializable {
 	@Column(name = "reply_rating", nullable = false)
 	private int rating;
 
-	public Integer getReplyId() {
+	public Reply() {}
+	
+	public Reply(User replier, Post parentPost, String content) {
+		this.replier = replier;
+		this.parentPost = parentPost;
+		this.content = content;
+		this.rating = 0;
+	}
+	
+	public Integer getId() {
 		return replyId;
 	}
 
-	public void setReplyId(Integer replyId) {
+	public void setId(Integer replyId) {
 		this.replyId = replyId;
 	}
 
@@ -61,7 +70,7 @@ public class Reply extends BaseTable implements Serializable {
 	}
 
 	public Integer getParentPostId() {
-		return getParentPost().getPostId();
+		return getParentPost().getId();
 	}
 
 	public Post getParentPost() {

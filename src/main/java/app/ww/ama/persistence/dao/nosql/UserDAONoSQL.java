@@ -34,4 +34,10 @@ public class UserDAONoSQL<T> implements UserDAO {
 		return null;
 	}
 
+	@Override
+	public void clearCache() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

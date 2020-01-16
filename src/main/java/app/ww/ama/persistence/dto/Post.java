@@ -51,11 +51,11 @@ public class Post extends BaseTable implements Serializable {
 		this.poster = poster;
 	}
 	
-	public Integer getPostId() {
+	public Integer getId() {
 		return postId;
 	}
 
-	public void setPostId(Integer postId) {
+	public void setId(Integer postId) {
 		this.postId = postId;
 	}
 

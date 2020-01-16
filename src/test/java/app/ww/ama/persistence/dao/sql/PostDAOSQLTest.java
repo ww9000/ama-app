@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import app.ww.ama.persistence.JUnitAbstractDAO;
 import app.ww.ama.persistence.dao.PostDAO;
@@ -20,7 +19,6 @@ import app.ww.ama.persistence.dao.UserDAO;
 import app.ww.ama.persistence.dto.Post;
 import app.ww.ama.persistence.dto.User;
 
-@Transactional
 public class PostDAOSQLTest extends JUnitAbstractDAO {
 
 	@Autowired
@@ -28,20 +26,20 @@ public class PostDAOSQLTest extends JUnitAbstractDAO {
 
 	@Autowired
 	private UserDAO userDao;
-	private User userOne;
-	private User userTwo;
+	private User userOne = new User(TestPosts.POST_ONE.posterId, null);
+	private User userTwo = new User(TestPosts.POST_TWO.posterId, null);
 
-	private enum TestPosts {
+	public enum TestPosts {
 		POST_ONE("gilfoyle", "CODE GAY", "You're gay for my code, you're code gay.", 999),
 		POST_TWO("gavin", "A BETTER PLACE",
 				"I don't want to live in a world where someone else makes the world a better place better than we do.",
 				0),
 		POST_THREE("hanneman", "LOOK IN THE MIRROR AND SAY", "This guy fucks.", -69);
 
-		private String posterId;
-		private String title;
-		private String content;
-		private Integer rating;
+		public String posterId;
+		public String title;
+		public String content;
+		public Integer rating;
 
 		private TestPosts(String posterId, String title, String content, Integer rating) {
 			this.posterId = posterId;
@@ -56,11 +54,8 @@ public class PostDAOSQLTest extends JUnitAbstractDAO {
 	 */
 	@Before
 	public void setup() {
-		userDao.save(new User(TestPosts.POST_ONE.posterId, null));
-		userOne = userDao.findById(TestPosts.POST_ONE.posterId);
-
-		userDao.save(new User(TestPosts.POST_TWO.posterId, null));
-		userTwo = userDao.findById(TestPosts.POST_TWO.posterId);
+		userDao.save(userOne);
+		userDao.save(userTwo);
 	}
 
 	@Test
@@ -77,19 +72,29 @@ public class PostDAOSQLTest extends JUnitAbstractDAO {
 
 	@Test
 	@Rollback(true)
+	public void testFindByIdNotFound() {
+		Post postOne = postDao.findById(1);
+		assertEquals(postOne, null);
+	}
+	
+	@Test
+	@Rollback(true)
 	public void testFindByUser() {
 		Post postOne = new Post(TestPosts.POST_ONE.title, TestPosts.POST_ONE.content);
 		postOne.setPoster(userTwo);
 		Integer postOneId = postDao.save(postOne);
+
+		List<Post> retrievedPosts = postDao.findByUser(userTwo);
+		assertTrue(retrievedPosts.size() == 1);
 		
 		Post postTwo = new Post(TestPosts.POST_TWO.title, TestPosts.POST_TWO.content);
 		postTwo.setPoster(userTwo);
 		Integer postTwoId = postDao.save(postTwo);
 		
-		List<Post> retrievedPosts = postDao.findByUser(userTwo);
+		retrievedPosts = postDao.findByUser(userTwo);
 		assertTrue(retrievedPosts.size() == 2);
-		assertEquals(postOneId, retrievedPosts.get(0).getPostId());
-		assertEquals(postTwoId, retrievedPosts.get(1).getPostId());
+		assertEquals(postOneId, retrievedPosts.get(0).getId());
+		assertEquals(postTwoId, retrievedPosts.get(1).getId());
 	}
 	
 	@Test

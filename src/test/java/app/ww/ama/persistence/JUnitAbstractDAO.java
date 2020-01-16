@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
@@ -13,6 +14,7 @@ import app.ww.ama.configuration.JUnitPersistenceConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { JUnitPersistenceConfiguration.class, JUnitCommonConfiguration.class })
+@Transactional
 public class JUnitAbstractDAO extends AbstractLogger {
 
 	@Autowired
